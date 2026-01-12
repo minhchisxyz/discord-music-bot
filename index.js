@@ -57,7 +57,7 @@ playerModule.init(refs)
 commandsModule.init(refs)
 
 // Client ready event
-client.on('ready', () => {
+client.on('clientReady', () => {
     log(`Logged in as ${client.user.tag} (ID: ${client.user.id})`)
     log(`Bot is in ${client.guilds.cache.size} server(s)`)
     if (allowedServerIds.length > 0) {
