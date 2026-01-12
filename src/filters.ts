@@ -3,20 +3,21 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 import { MESSAGES, SKIP_REASONS } from './constants.js'
 import { log, logSkippedSong } from './logger.js'
+import type { SongCheckResult, FiltersConfig } from './types.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
 // Filter state
-let singers = []
-let allowedTitles = []
-let forbiddenTitles = []
+let singers: string[] = []
+let allowedTitles: string[] = []
+let forbiddenTitles: string[] = []
 
 const filtersPath = path.join(__dirname, '..', 'filters.json')
 
-function loadFilters() {
+export function loadFilters(): void {
     try {
-        const filters = JSON.parse(fs.readFileSync(filtersPath, 'utf-8'))
+        const filters: FiltersConfig = JSON.parse(fs.readFileSync(filtersPath, 'utf-8'))
         singers = filters.singers || []
         allowedTitles = filters.allowedTitles || []
         forbiddenTitles = filters.forbiddenTitles || []
@@ -25,8 +26,9 @@ function loadFilters() {
         log(`Allowed titles: ${allowedTitles.join(', ')}`)
         log(`Forbidden titles: ${forbiddenTitles.join(', ')}`)
     } catch (e) {
-        log(`Error loading filters.json: ${e.message}`)
-        const defaultFilters = {
+        const error = e as Error
+        log(`Error loading filters.json: ${error.message}`)
+        const defaultFilters: FiltersConfig = {
             singers: ['VSTRA'],
             allowedTitles: [],
             forbiddenTitles: []
@@ -42,7 +44,7 @@ function loadFilters() {
 loadFilters()
 
 // Watch for changes to filters.json
-let filtersDebounceTimer = null
+let filtersDebounceTimer: NodeJS.Timeout | null = null
 fs.watch(filtersPath, (eventType) => {
     if (eventType === 'change') {
         // Debounce to avoid multiple reloads on rapid saves
@@ -54,7 +56,7 @@ fs.watch(filtersPath, (eventType) => {
     }
 })
 
-async function shouldAddSong(title, guildName) {
+export async function shouldAddSong(title: string, guildName: string): Promise<SongCheckResult> {
     const lowerTitle = title.toLowerCase()
     // First check: singers and allowedTitles (whitelist - if match, allow)
     if (singers.some(singer => lowerTitle.includes(singer.toLowerCase()))) {
@@ -77,7 +79,3 @@ async function shouldAddSong(title, guildName) {
     return { allowed: true }
 }
 
-export {
-    shouldAddSong,
-    loadFilters,
-}

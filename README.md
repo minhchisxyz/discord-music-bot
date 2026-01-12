@@ -17,17 +17,19 @@ A Discord music bot that plays YouTube music with Vietnamese song filtering capa
 
 ```
 discord-music-bot/
-├── index.js           # Main entry point - Discord client setup, event handlers
+├── index.ts           # Main entry point - Discord client setup, event handlers
 ├── filters.json       # Configurable song filters (singers, allowed/forbidden titles)
 ├── cookies.txt        # YouTube cookies for personalized playlists (optional)
 ├── .env               # Environment variables (Discord token, YouTube API key, allowed servers)
 ├── src/
-│   ├── constants.js   # Messages, limits, and skip reasons
-│   ├── logger.js      # Logging functions
-│   ├── filters.js     # Song filtering logic with file watcher
-│   ├── youtube.js     # YouTube API & yt-dlp integration
-│   ├── player.js      # Audio player management
-│   └── commands.js    # Command handlers
+│   ├── types.ts       # TypeScript type definitions
+│   ├── constants.ts   # Messages, limits, and skip reasons
+│   ├── logger.ts      # Logging functions
+│   ├── filters.ts     # Song filtering logic with file watcher
+│   ├── youtube.ts     # YouTube API & yt-dlp integration
+│   ├── player.ts      # Audio player management
+│   └── commands.ts    # Command handlers
+├── dist/              # Compiled JavaScript output
 └── logs/
     ├── bot.log        # General bot logs
     └── skipped_songs.log  # Log of skipped songs
@@ -35,7 +37,7 @@ discord-music-bot/
 
 ## Prerequisites
 
-- [Node.js](https://nodejs.org/) (v16.9.0 or higher)
+- [Node.js](https://nodejs.org/) (v18.0.0 or higher)
 - [yt-dlp](https://github.com/yt-dlp/yt-dlp) executable in the project folder
 - [FFmpeg](https://ffmpeg.org/) installed and available in PATH
 - Discord Bot Token
@@ -69,11 +71,21 @@ discord-music-bot/
 
 5. Download [yt-dlp.exe](https://github.com/yt-dlp/yt-dlp/releases) and place it in the project folder
 
+6. Build the TypeScript project:
+   ```bash
+   npm run build
+   ```
+
 ## Usage
 
 Start the bot:
 ```bash
-node index.js
+npm start
+```
+
+For development with auto-rebuild:
+```bash
+npm run dev
 ```
 
 ### Commands

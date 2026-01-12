@@ -1,6 +1,8 @@
 import fs from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
+import { Client } from 'discord.js'
+import type { QueuesMap } from './types.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -15,47 +17,40 @@ fs.writeFileSync(logFilePath, '')
 fs.writeFileSync(skippedFilePath, '')
 
 // Will be set by the main file
-let clientRef = null
-let queuesRef = null
+let clientRef: Client | null = null
+let queuesRef: QueuesMap | null = null
 
-function setClientRef(client) {
+export function setClientRef(client: Client): void {
     clientRef = client
 }
 
-function setQueuesRef(queues) {
+export function setQueuesRef(queues: QueuesMap): void {
     queuesRef = queues
 }
 
-function log(message) {
+export function log(message: string): void {
     const timestamp = new Date().toISOString()
     const logMessage = `[${timestamp}] ${message}\n`
     console.log(logMessage)
     fs.appendFileSync(logFilePath, logMessage)
 }
 
-function logSkippedSong(title, guildName) {
+export function logSkippedSong(title: string, guildName: string): void {
     const timestamp = new Date().toISOString()
     const logMessage = `[${timestamp}] Skipped ${title} in ${guildName}\n`
     fs.appendFileSync(skippedFilePath, logMessage)
 }
 
-function logQueueSummary() {
+export function logQueueSummary(): void {
     if (!queuesRef || !clientRef) {
         log('Queue summary unavailable - refs not set')
         return
     }
     let message = 'Current queue'
     queuesRef.forEach((queue, guildId) => {
-        const guildName = clientRef.guilds.cache.get(guildId)?.name || 'Unknown Server'
+        const guildName = clientRef!.guilds.cache.get(guildId)?.name || 'Unknown Server'
         message += `\n${guildName}: ${queue.length} songs`
     })
     log(message)
 }
 
-export {
-    log,
-    logSkippedSong,
-    logQueueSummary,
-    setClientRef,
-    setQueuesRef,
-}
