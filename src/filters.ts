@@ -1,19 +1,18 @@
 import fs from 'fs'
 import path from 'path'
-import { fileURLToPath } from 'url'
 import { MESSAGES, SKIP_REASONS } from './constants.js'
 import { log, logSkippedSong } from './logger.js'
 import type { SongCheckResult, FiltersConfig } from './types.js'
 
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
+// Use project root directory (where package.json is)
+const projectRoot = process.cwd()
 
 // Filter state
 let singers: string[] = []
 let allowedTitles: string[] = []
 let forbiddenTitles: string[] = []
 
-const filtersPath = path.join(__dirname, '..', 'filters.json')
+const filtersPath = path.join(projectRoot, 'filters.json')
 
 export function loadFilters(): void {
     try {

@@ -1,13 +1,12 @@
 import fs from 'fs'
 import path from 'path'
-import { fileURLToPath } from 'url'
 import { Client } from 'discord.js'
 import type { QueuesMap } from './types.js'
 
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
+// Use project root directory (where package.json is)
+const projectRoot = process.cwd()
 
-const logsDir = path.join(__dirname, '..', 'logs')
+const logsDir = path.join(projectRoot, 'logs')
 if (!fs.existsSync(logsDir)) fs.mkdirSync(logsDir)
 
 // Clear log files at startup

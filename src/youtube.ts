@@ -3,13 +3,12 @@ import fs from 'fs'
 import path from 'path'
 import { exec } from 'child_process'
 import { promisify } from 'util'
-import { fileURLToPath } from 'url'
 import dotenv from 'dotenv'
 
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
+// Use project root directory (where package.json is)
+const projectRoot = process.cwd()
 
-dotenv.config({ path: path.join(__dirname, '..', '.env') })
+dotenv.config({ path: path.join(projectRoot, '.env') })
 
 const execPromise = promisify(exec)
 
@@ -23,7 +22,7 @@ export const youtube = google.youtube({
 })
 
 // Path to YouTube cookies file for authenticated requests (personalized playlists)
-const cookiesPath = path.join(__dirname, '..', 'cookies.txt')
+const cookiesPath = path.join(projectRoot, 'cookies.txt')
 const hasCookiesFile = fs.existsSync(cookiesPath)
 
 if (hasCookiesFile) {
