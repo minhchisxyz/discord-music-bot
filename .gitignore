@@ -1,0 +1,9 @@
+nodejs/node_modules/
+.env
+logs/
+
+# Sensitive files - cookies
+cookies.json
+cookies.txt
+convert-cookies.js
+yt-dlp.exe
