@@ -55,13 +55,25 @@ export async function fetchMixPlaylist(url: string, guildName: string): Promise<
     }
 }
 
-export async function fetchStreamUrl(query: string): Promise<StreamUrlResult> {
+export async function fetchStreamUrl(query: string, retries = 3): Promise<StreamUrlResult> {
+    const cookiesArg = hasCookiesFile ? `--cookies "${cookiesPath}"` : ''
     let streamUrl: string
-    try {
-        const { stdout } = await execPromise(`yt-dlp -g -f bestaudio --no-playlist "${query}"`, { timeout: 7000 })
-        streamUrl = stdout.trim()
-    } catch (e) {
-        throw e
+
+    for (let i = 0; i < retries; i++) {
+        try {
+            const { stdout } = await execPromise(`yt-dlp ${cookiesArg} -g -f bestaudio --no-playlist "${query}"`, { timeout: 15000 })
+            streamUrl = stdout.trim()
+            break
+        } catch (e) {
+            const error = e as Error
+            if (error.message.includes('429') && i < retries - 1) {
+                const delay = Math.pow(2, i + 1) * 1000 // 2s, 4s, 8s
+                log(`Rate limited, retrying in ${delay / 1000}s...`)
+                await new Promise(resolve => setTimeout(resolve, delay))
+                continue
+            }
+            throw e
+        }
     }
 
     let title: string
@@ -79,7 +91,7 @@ export async function fetchStreamUrl(query: string): Promise<StreamUrlResult> {
             }
         } catch (e) {
             try {
-                const { stdout } = await execPromise(`chcp 65001 >nul && yt-dlp --get-title --encoding utf-8 "${query}"`, { timeout: 7000, encoding: 'utf8' })
+                const { stdout } = await execPromise(`chcp 65001 >nul && yt-dlp ${cookiesArg} --get-title --encoding utf-8 "${query}"`, { timeout: 15000, encoding: 'utf8' })
                 title = stdout.trim()
             } catch (e) {
                 throw new Error('Could not fetch title')
@@ -88,7 +100,7 @@ export async function fetchStreamUrl(query: string): Promise<StreamUrlResult> {
     } else {
         throw new Error('Invalid YouTube URL')
     }
-    return { streamUrl, title }
+    return { streamUrl: streamUrl!, title }
 }
 
 export async function searchVideo(query: string): Promise<string | null> {
@@ -120,8 +132,24 @@ export async function fetchPlaylistItems(playlistId: string): Promise<PlaylistIt
     }))
 }
 
-export async function fetchStreamOnly(videoUrl: string): Promise<string> {
-    const { stdout } = await execPromise(`yt-dlp -g -f bestaudio --no-playlist "${videoUrl}"`, { timeout: 7000 })
-    return stdout.trim()
+export async function fetchStreamOnly(videoUrl: string, retries = 3): Promise<string> {
+    const cookiesArg = hasCookiesFile ? `--cookies "${cookiesPath}"` : ''
+
+    for (let i = 0; i < retries; i++) {
+        try {
+            const { stdout } = await execPromise(`yt-dlp ${cookiesArg} -g -f bestaudio --no-playlist "${videoUrl}"`, { timeout: 15000 })
+            return stdout.trim()
+        } catch (e) {
+            const error = e as Error
+            if (error.message.includes('429') && i < retries - 1) {
+                const delay = Math.pow(2, i + 1) * 1000 // 2s, 4s, 8s
+                log(`Rate limited, retrying in ${delay / 1000}s...`)
+                await new Promise(resolve => setTimeout(resolve, delay))
+                continue
+            }
+            throw e
+        }
+    }
+    throw new Error('Max retries exceeded for fetchStreamOnly')
 }
 
