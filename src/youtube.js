@@ -1,12 +1,19 @@
-const { google } = require('googleapis')
-const fs = require('fs')
-const path = require('path')
-const { exec } = require('child_process')
-const util = require('util')
-const execPromise = util.promisify(exec)
-require('dotenv').config({ path: path.join(__dirname, '..', '.env') })
+import { google } from 'googleapis'
+import fs from 'fs'
+import path from 'path'
+import { exec } from 'child_process'
+import { promisify } from 'util'
+import { fileURLToPath } from 'url'
+import dotenv from 'dotenv'
 
-const { log } = require('./logger')
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
+
+dotenv.config({ path: path.join(__dirname, '..', '.env') })
+
+const execPromise = promisify(exec)
+
+import { log } from './logger.js'
 
 // YouTube API setup
 const youtube = google.youtube({
@@ -123,7 +130,7 @@ async function fetchStreamOnly(videoUrl) {
     return stdout.trim()
 }
 
-module.exports = {
+export {
     youtube,
     fetchMixPlaylist,
     fetchStreamUrl,
@@ -131,4 +138,3 @@ module.exports = {
     fetchPlaylistItems,
     fetchStreamOnly,
 }
-

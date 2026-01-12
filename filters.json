@@ -1,7 +1,22 @@
 {
   "singers": [
-    "VSTRA"
+    "VSTRA",
+    "Wrxdie",
+    "MCK",
+    "Obito",
+    "WREN EVANS",
+    "PUPPY",
+    "DANGRANGTO",
+    "tlinh",
+    "B Ray",
+    "AMEE",
+    "SƠN TÙNG M-TP"
   ],
-  "allowedTitles": [],
-  "forbiddenTitles": []
+  "allowedTitles": [
+    "REMIX"
+  ],
+  "forbiddenTitles": [
+    "HIEUTHUHAI",
+    "Negav"
+  ]
 }

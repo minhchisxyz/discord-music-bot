@@ -1,12 +1,14 @@
-const { Client, GatewayIntentBits, PermissionsBitField } = require('discord.js')
-require('dotenv').config()
+import { Client, GatewayIntentBits, PermissionsBitField } from 'discord.js'
+import dotenv from 'dotenv'
+
+dotenv.config()
 
 // Import modules
-const { log, logQueueSummary, setClientRef, setQueuesRef } = require('./src/logger')
-const { setDisconnectTimer } = require('./src/player')
-const playerModule = require('./src/player')
-const commandsModule = require('./src/commands')
-const { MESSAGES } = require('./src/constants')
+import { log, logQueueSummary, setClientRef, setQueuesRef } from './src/logger.js'
+import { setDisconnectTimer } from './src/player.js'
+import * as playerModule from './src/player.js'
+import * as commandsModule from './src/commands.js'
+import { MESSAGES } from './src/constants.js'
 
 // Create Discord client
 const client = new Client({

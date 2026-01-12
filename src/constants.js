@@ -2,28 +2,28 @@
 const MESSAGES = {
     // Playing messages
     NOW_PLAYING: (title) => `🎵 Lên nhạc: **${title}**`,
-    QUEUE_EMPTY: '**Hết nhạc rầu mấy bé oi, nào nghe tiếp thì bố lại ngoi lên**',
+    QUEUE_EMPTY: '**Hết nhạc rầu mấy bé oi, nào nghe tiếp thì anh lại ngoi lên**',
     NO_LISTENERS: '**Mấy cu iem đếch nghe nữa à. Pipi sicula**',
 
     // Skip reasons
     SKIP_FORBIDDEN: (title) => `❌ Nhạc cứt: **${title}**`,
-    SKIP_NOT_VIETNAMESE: (title) => `❌ Không phải nhạc Việt: **${title}**`,
+    SKIP_NOT_VIETNAMESE: (title) => `❌ Deck phải nhạc Việt: **${title}**`,
     SKIP_PRIVATE_DELETED: (title) => `❌ Video không khả dụng: **${title}**`,
     SKIP_FETCH_ERROR: (title) => `❌ Không thể tải: **${title}**`,
 
     // Playlist messages
     PLAYLIST_LOADING: '📋 Đang tải playlist...',
     PLAYLIST_COMPLETE: (added, skipped) => `✅ Playlist hoàn tất: Đã thêm ${added} bài, bỏ qua ${skipped} bài`,
-    PLAYLIST_QUEUE_LIMIT: 'Queue limit of 50 songs reached!',
+    PLAYLIST_QUEUE_LIMIT: 'Queue limit of 20 songs reached!',
 
     // Command responses
-    SKIPPED_TO_NEXT: 'Skipped to next song!',
+    SKIPPED_TO_NEXT: 'Bỏ qua bài này nhen',
     QUEUE_CLEARED: '🗑️ Queue đã được xóa!',
     SERVER_NOT_ALLOWED: '❌ Bot không được phép hoạt động trong server này.',
-    NO_SONG_PLAYING: 'No song is playing.',
-    STOPPED: 'Stopped music, cleared queue, and left the voice channel.',
-    PAUSED: 'Paused the music.',
-    RESUMED: 'Resumed the music.',
+    NO_SONG_PLAYING: 'Hong có bài hát nào cạ',
+    STOPPED: 'Nhạc tắt, xoá tất cả và paipai',
+    PAUSED: 'Khoan, dừng khoảng chừng là 2 giây',
+    RESUMED: 'Nhạc chạy',
     NOT_PAUSED: 'Music is not paused.',
     NO_MUSIC_PLAYING: 'No music is playing.',
 
@@ -49,7 +49,7 @@ const SKIP_REASONS = {
     FETCH_ERROR: 'fetch_error',
 }
 
-module.exports = {
+export {
     MESSAGES,
     LIMITS,
     SKIP_REASONS,

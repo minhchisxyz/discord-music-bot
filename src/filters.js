@@ -1,7 +1,11 @@
-const fs = require('fs')
-const path = require('path')
-const { MESSAGES, SKIP_REASONS } = require('./constants')
-const { log, logSkippedSong } = require('./logger')
+import fs from 'fs'
+import path from 'path'
+import { fileURLToPath } from 'url'
+import { MESSAGES, SKIP_REASONS } from './constants.js'
+import { log, logSkippedSong } from './logger.js'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
 // Filter state
 let singers = []
@@ -73,8 +77,7 @@ async function shouldAddSong(title, guildName) {
     return { allowed: true }
 }
 
-module.exports = {
+export {
     shouldAddSong,
     loadFilters,
 }
-

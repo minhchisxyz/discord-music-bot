@@ -1,7 +1,7 @@
-const { createAudioResource, AudioPlayerStatus } = require('@discordjs/voice')
-const { PermissionsBitField } = require('discord.js')
-const { MESSAGES, LIMITS } = require('./constants')
-const { log, logQueueSummary } = require('./logger')
+import { createAudioResource } from '@discordjs/voice'
+import { PermissionsBitField } from 'discord.js'
+import { MESSAGES, LIMITS } from './constants.js'
+import { log, logQueueSummary } from './logger.js'
 
 // State maps - will be initialized from main
 let client = null
@@ -112,7 +112,7 @@ function clearDisconnectTimer(guildId) {
     disconnectTimers.delete(guildId)
 }
 
-module.exports = {
+export {
     init,
     playNext,
     setDisconnectTimer,

@@ -2,6 +2,7 @@
   "name": "discord-music-bot",
   "version": "1.0.0",
   "description": "Discord music bot with YouTube playback and filtering",
+  "type": "module",
   "main": "index.js",
   "scripts": {
     "start": "node index.js"

@@ -1,10 +1,10 @@
-const { joinVoiceChannel, createAudioPlayer, AudioPlayerStatus } = require('@discordjs/voice')
-const { PermissionsBitField } = require('discord.js')
-const { MESSAGES, LIMITS } = require('./constants')
-const { log, logQueueSummary, logSkippedSong } = require('./logger')
-const { shouldAddSong } = require('./filters')
-const { fetchStreamUrl, searchVideo, fetchMixPlaylist, fetchPlaylistItems, fetchStreamOnly } = require('./youtube')
-const { playNext, setDisconnectTimer, clearDisconnectTimer } = require('./player')
+import { joinVoiceChannel, createAudioPlayer, AudioPlayerStatus } from '@discordjs/voice'
+import { PermissionsBitField } from 'discord.js'
+import { MESSAGES, LIMITS } from './constants.js'
+import { log, logQueueSummary, logSkippedSong } from './logger.js'
+import { shouldAddSong } from './filters.js'
+import { fetchStreamUrl, searchVideo, fetchMixPlaylist, fetchPlaylistItems, fetchStreamOnly } from './youtube.js'
+import { playNext, setDisconnectTimer, clearDisconnectTimer } from './player.js'
 
 // State maps - will be initialized from main
 let client = null
@@ -320,7 +320,7 @@ async function handleClear(message) {
     logQueueSummary()
 }
 
-module.exports = {
+export {
     init,
     handlePlay,
     handleQueue,
@@ -330,4 +330,3 @@ module.exports = {
     handleResume,
     handleClear,
 }
-
