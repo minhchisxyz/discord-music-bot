@@ -19,6 +19,17 @@ import type {
     ModuleRefs
 } from './src/types.js'
 
+// Global error handlers to prevent crashes
+process.on('uncaughtException', (error) => {
+    log(`Uncaught Exception: ${error.message}`)
+    console.error('Uncaught Exception:', error)
+})
+
+process.on('unhandledRejection', (reason, promise) => {
+    log(`Unhandled Rejection at: ${promise}, reason: ${reason}`)
+    console.error('Unhandled Rejection:', reason)
+})
+
 // Create Discord client
 const client = new Client({
     intents: [

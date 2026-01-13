@@ -72,6 +72,17 @@ export async function handlePlay(message: Message<true>, args: string[]): Promis
         })
         client.connections.set(message.guild!.id, connection)
         log(`Connected to voice channel ${voiceChannel.name} (ID: ${voiceChannel.id}) in ${message.guild!.name}`)
+
+        // Handle voice connection errors to prevent crashes
+        connection.on('error', (error: Error) => {
+            log(`Voice connection error in ${message.guild!.name}: ${error.message}`)
+            // Clean up on error
+            client!.connections.delete(message.guild!.id)
+            client!.players.delete(message.guild!.id)
+            queues?.delete(message.guild!.id)
+            fetchingStates?.delete(message.guild!.id)
+            firstSongPlayed?.delete(message.guild!.id)
+        })
     }
 
     let player = client.players.get(message.guild!.id)
